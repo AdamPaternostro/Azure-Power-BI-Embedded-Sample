@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Power BI - Embed Sample</title>
+</head>
+
+<body>
+    <h2>Embedded Report (Pure JavaScript)</h2>
+    <p>
+        <input type="button" value="Click to Run Report"
+               onclick="javascript:RunReport('{{REPLACE-ME}}');">
+    </p>
+    <!-- All you need is this DIV in your HTML -->
+    <div id="embedContainer" style="height:500px"></div>
+
+</body>
+
+</html>
+
+<!-- Reference JQuery off a CDN -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+<!-- Put the powerbi.min.js on a webserver, CDN or Azure Storeage with a SAS token -->
+<script src="{{REPLACE-ME}}"></script>
+
+<script>
+
+    function RunReport(reportId) {
+        try {
+            var azureFunction = "https://{{REPLACE-ME}}.azurewebsites.net/api/PowerBIEmbeddedToken";
+            var azureFunctionCode = "{{REPLACE-ME}}";
+            var serviceURL = azureFunction + "?code=" + azureFunctionCode;
+
+            var jsonData = {
+                reportId: reportId
+            };
+
+            $.ajax({
+                type: "POST",
+                url: serviceURL,
+                data: JSON.stringify(jsonData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
+        } catch (exception) {
+            handleError("RunReport", exception)
+        }
+    } // RunReport
+
+    function successFunc(data, status) {
+        try {
+            if (status == "success") {
+                // place data from Azure Function into variables
+                var accessToken = data.EmbedToken;
+                var embedUrl = data.EmbedUrl;
+                var embedReportId = data.ReportId;
+
+                // Get models. models contains enums that can be used.
+                var models = window['powerbi-client'].models;
+
+                // Embed configuration used to describe the what and how to embed.
+                // This object is used when calling powerbi.embed.
+                // This also includes settings and options such as filters.
+                // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+                var config = {
+                    type: 'report',
+                    tokenType: models.TokenType.Embed,
+                    accessToken: accessToken,
+                    embedUrl: embedUrl,
+                    id: embedReportId,
+                    permissions: models.Permissions.All,
+                    settings: {
+                        filterPaneEnabled: true,
+                        navContentPaneEnabled: true
+                    }
+                };
+
+                // Get a reference to the embedded report HTML element
+                var reportContainer = $('#embedContainer')[0];
+
+                // Embed the report and display it within the div container.
+                var report = powerbi.embed(reportContainer, config);
+            }
+            else {
+                alert("The report could not be embedded.  Please reload the page and try again.");
+            }
+        } catch (exception) {
+            handleError("successFunc", exception)
+        }
+    } // successFunc
+
+
+    function errorFunc() {
+        try {
+            alert("The report could not be embedded.  Please reload the page and try again.");
+        } catch (exception) {
+            handleError("errorFunc", exception)
+        }
+    } // errorFunc
+
+
+    function handleError(methodName, exeption) {
+        alert("Error in : " + methodName);
+        alert("Exception: " + exeption.message);
+    } // handleError
+
+</script>
