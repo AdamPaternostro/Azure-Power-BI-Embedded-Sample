@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "AuthenticationType": "ServicePrincipal",
+    "applicationId": "{{REPLACE-ME}}",
+    "workspaceId": "{{REPLACE-ME}}",
+    "authorityUrl": "https://login.microsoftonline.com/common/",
+    "resourceUrl": "https://analysis.windows.net/powerbi/api",
+    "apiUrl": "https://api.powerbi.com",
+    "applicationSecret": "{{REPLACE-ME}}",
+    "tenant": "{{REPLACE-ME}}",
+    "pbiUsername": "Not-needed-we-are-using-a-service-principle.",
+    "pbiPassword": "Not-needed-we-are-using-a-service-principle."
+  }
+}
