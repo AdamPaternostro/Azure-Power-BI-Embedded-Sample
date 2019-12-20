@@ -1,4 +1,4 @@
-# Configure PowerBI Embedded and call from JavaScript
+# Configure Power BI Embedded and call from JavaScript
 This GitHub repository is designed to help you setup and configure Power BI Embedded in your Azure subscription.
 The process of setting up Power BI Embedded is quite confusing since it requires configuring several resource correctly 
 (e.g. Azure Service Principal, Azure Security, Power BI, creating Embedded capacity, etc.) and you must tie them together correctly.
@@ -27,8 +27,8 @@ This process will walk through the following
 - Create a simple HTML page with minimal JavaScript to show you how to embed a report.  This allows you to  the minimul code required to embed a report on a web page or single page application.
 
 #### Notes
-- I will not use the PowerBI online wizard (https://app.powerbi.com/embedsetup/appownsdata) to create the PowerBI setup.  
-- Sometimes the wizard does not work due to how companies have configured their Azure Subscription. If you use the wizard, you must use it as a Global Azure Admin and that Admin must have a PowerBI Pro account and they must have logged into https://app.powerbi.com/ before using the wizard.  You also must go generate a key by hand.
+- I will not use the Power BI online wizard (https://app.powerbi.com/embedsetup/appownsdata) to create the Power BI setup.  
+- Sometimes the wizard does not work due to how companies have configured their Azure Subscription. If you use the wizard, you must use it as a Global Azure Admin and that Admin must have a Power BI Pro account and they must have logged into https://app.powerbi.com/ before using the wizard.  You also must go generate a key by hand.
 
 ## What you will need
 - An Azure Subscription (you can get a free one for testing)
@@ -45,7 +45,7 @@ This process will walk through the following
 
 
 ## Optional: Create a new Azure tenant (Requires Azure AD Admin)
-You can skip these steps if you are doing this in your company's Azure subscription.  Since this is a test I will show you in a test tenant.  I am not a Global Azure AD admin at Microsoft so I use a test tenant to perform PowerBI Embedded work.
+You can skip these steps if you are doing this in your company's Azure subscription.  Since this is a test I will show you in a test tenant.  I am not a Global Azure AD admin at Microsoft so I use a test tenant to perform Power BI Embedded work.
 1. Open the Azure Portal https://portal.azure.com
 2. Click the menu in the top left and select Create a Resource
 3. Search for Azure Active Directory
@@ -263,16 +263,16 @@ Currently, you have been testing using Power BI resources.  In order to distribu
 
 ![alt tag](https://raw.githubusercontent.com/AdamPaternostro/Azure-Power-BI-Embedded-Sample/master/Images/AssociateCapacity.png)
 
-
-
+8.  In the Azure Portal you can pause/un-pause your Power BI Embedded Capacity for your development and QA testing.
 
 
 # Links
 - Playground: https://microsoft.github.io/PowerBI-JavaScript/demo/v2-demo/index.html
-- Start / Stop: https://docs.microsoft.com/en-us/power-bi/developer/azure-pbie-pause-start
+- Start / Stop: https://docs.microsoft.com/en-us/power-bi/developer/azure-pbie-pause-start.  You could author a Azure Function or Azure Automation to schedule a suspend and resume of your Embedded capacity.
+  - https://docs.microsoft.com/en-us/rest/api/power-bi-embedded/capacities/suspend
+  - https://docs.microsoft.com/en-us/rest/api/power-bi-embedded/capacities/resume
 - Sample: https://docs.microsoft.com/en-us/power-bi/developer/embed-sample-for-customers
 - https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embedding-Basics
-- https://docs.microsoft.com/en-us/rest/api/power-bi-embedded/capacities/suspend
-- https://docs.microsoft.com/en-us/rest/api/power-bi-embedded/capacities/resume
+
 
 
