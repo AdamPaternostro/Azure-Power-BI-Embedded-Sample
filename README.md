@@ -219,6 +219,15 @@ You can skip these steps if you are doing this in your company's Azure subscript
    - Click Save
 12. Rerun the index.html report in your browser   
 
+# Create the Power BI Embedded Capacity
+1. Open the Azure Portal
+2. Create a new resource Power BI Embedded
+3. Open https://app.powerbi.com
+4. Click on Workspaces
+5. On your workspaces click the "..." and select Workspace settings
+6. Click on Premium
+7. Assoicate your capacity
+
 # Links
 - Playground: https://microsoft.github.io/PowerBI-JavaScript/demo/v2-demo/index.html
 - Start / Stop: https://docs.microsoft.com/en-us/power-bi/developer/azure-pbie-pause-start
