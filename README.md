@@ -222,11 +222,22 @@ You can skip these steps if you are doing this in your company's Azure subscript
 # Create the Power BI Embedded Capacity
 1. Open the Azure Portal
 2. Create a new resource Power BI Embedded
+
+![alt tag](https://raw.githubusercontent.com/AdamPaternostro/Azure-Power-BI-Embedded-Sample/master/Images/CreatePowerBIEmbedded.png)
+
+![alt tag](https://raw.githubusercontent.com/AdamPaternostro/Azure-Power-BI-Embedded-Sample/master/Images/FinalCreatePowerBIEmbedded.png)
+
 3. Open https://app.powerbi.com
 4. Click on Workspaces
 5. On your workspaces click the "..." and select Workspace settings
 6. Click on Premium
 7. Assoicate your capacity
+
+![alt tag](https://raw.githubusercontent.com/AdamPaternostro/Azure-Power-BI-Embedded-Sample/master/Images/AssociateCapacity.png)
+
+
+
+
 
 # Links
 - Playground: https://microsoft.github.io/PowerBI-JavaScript/demo/v2-demo/index.html
