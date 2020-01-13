@@ -15,16 +15,16 @@ The goal of this is:
 
 ## Detail Steps
 This process will walk through the following
-- Create an Azure tenant.  This step can be skipped unless you are doing a test configuration like this sample.  I show it since some users might want to test in an Azure subscription where they are not an Admin.
-- Create an Azure Service Principal.  A Service Principal is analogous to a user. Service Principal should be used for automated processes in Azure and in this case we are using a service principal as the "unattended user" who will run the embedded reports.
+- Create an Azure tenant.  This step can be skipped unless you are doing a test configuration (like I performed in this sample).  I show it since some users might want to test in an Azure subscription where they are not an Admin.
+- Create an Azure Service Principal.  A Service Principal is analogous to a user. Service Principals should be used for automated processes in Azure and in this case we are using a service principal as the "unattended user" who will run the embedded reports.
 - Create a Power BI Account.  You can use a free trial account for Power BI if you do not own a license.  If you need a licence you need to contact your Office 365 admin (someone in your organization) and they can assign you a license.
    - Purchase a license: https://docs.microsoft.com/en-us/power-bi/service-admin-purchasing-power-bi-pro
 - Create a Power BI Workspace.  This is where we will deploy your reports. 
 - Configure Power BI to use the service principal created above
 - Deploy a sample report
-- Walk through the C# code: PowerBI-Developer-Samples and explain what a report token, url and id are used for when embedding.
-- Deploy an Azure Function which will run the C# code from the PowerBI-Developer-Samples and return back a report token, url and id.  The Azure Function means we can then call this from any system, web page or JavaScript code and have our reports easily embedded into any application.
-- Create a simple HTML page with minimal JavaScript to show you how to embed a report.  This allows you to  the minimul code required to embed a report on a web page or single page application.
+- Walk through the C# code in the PowerBI-Developer-Samples sample project provided by Microsoft and explain each element used in embedded (e.g. report token, report url and report id).
+- Deploy an Azure Function which will run the C# code from the PowerBI-Developer-Samples and return back a report token, url and id.  The Azure Function means we can then call this from any system, web page or JavaScript code and have our reports easily embedded into any application.  You do not want to author this code everytime you want to quickly embed a report.  Embedding should take 2 minutes.
+- Create a simple HTML page with minimal JavaScript to show you how to embed a report.  This allows you to  the minimal code required to embed a report on a web page or single page application.
 
 #### Notes
 - I will not use the Power BI online wizard (https://app.powerbi.com/embedsetup/appownsdata) to create the Power BI setup.  
@@ -33,11 +33,11 @@ This process will walk through the following
 ## What you will need
 - An Azure Subscription (you can get a free one for testing)
 - A Power BI Pro license (you can create free account for testing)
-- You will need to be a global Azure Admin or have an Admin that can help you through the process.  The Admin should also be a Power BI Admin.  Go find this person in your company and make friends with them.  You should watch and understand this and then work with them to setup the Azure and Power BI resources.  You will need about 30 minutes of their time.
+- You will need to be a global Azure Admin or have an Admin that can help you through the process.  The Admin should also be a Power BI Admin.  Go find this person in your company and make friends with them.  You should watch and understand the video and then work with them to setup the Azure and Power BI resources.  You will need about 30 minutes of their time.
 - You will need to install on your machine (make sure you can install items on your machine)
   - Visual Studio Community (or higher edition): https://visualstudio.microsoft.com/vs/community/
   - Azure Function local development tools (require Node.js to be installed).  Details are below.
-- A resource group in Azure that you can deploy to.  In an enterprise typically an Admin will create the resource group and grant your Microsoft account Contributor access to the resource group.  This is where we will create the Power BI capacity and Azure Function App.
+- A resource group in Azure that you can deploy to.  In an enterprise, typically an Admin will create the resource group and grant your Microsoft account Contributor access to the resource group.  This is where we will create the Power BI capacity and Azure Function App.
 
 
 ## YouTube Video
@@ -55,7 +55,8 @@ You can skip these steps if you are doing this in your company's Azure subscript
    - Initial Domain Name: paternostroembeddedtest
 6. Click Create (and wait)
 
-## Create a user (Requires Azure AD Admin)
+## Optional: Create a user (Requires Azure AD Admin).
+You can skip this step if you did not perform the step above since you will use your real email (or Azure account) as the user.
 1. Click on Manage new Directory
 2. Click on Users
 3. Click New User (e.g. adampaternostro@adamembeddedtenant.onmicrosoft.com)
@@ -247,7 +248,7 @@ If you have a license you can skip this step
 
 
 # Create the Power BI Embedded Capacity
-Currently, you have been testing using Power BI resources.  In order to distribute reports using Power BI embedded you must use your Premium Capcity or create Embedded capacity to ensure you in compliance with licensing.
+Currently, you have been testing using Power BI resources.  In order to distribute reports using Power BI embedded you must use your Premium Capacity or create Embedded capacity to ensure you in compliance with licensing.
 1. Open the Azure Portal
 2. Create a new resource Power BI Embedded
 
@@ -266,10 +267,12 @@ Currently, you have been testing using Power BI resources.  In order to distribu
 8.  In the Azure Portal you can pause/un-pause your Power BI Embedded Capacity for your development and QA testing.
 
 # Securing your Application
-- If you notice the index.html page has the Azure Function key placed in the JavaScript.  You should protect this key and only place the key in pages that are secure (meaning the user when through a login page).
+- If you notice the index.html page has the Azure Function Key placed in the JavaScript.  You should protect this Key and only place the key in pages that are secure (meaning the user went through a login page).
 - If there is no login page, then you should create a second Azure Function called RunReport"ABC" and have RunReport"ABC" function call the Power BI Function App which can protect pass the Power BI Function App key and the report id.
 - Even if there is a login page and you share this Power BI workspace with other reports that have sensitive data you should be aware a rogue user could start calling your Function App and passing in every Guid in existance (it will take them a long time).
-- My perferred option is to add a token parameter to the Power BI Function App.  Create a JWT token (or such) and pass this as a parameter to the Function App.  This is a signed token and the Function App would need to verify it was generated by your organization.  The token could contain the report id or other elements and as long as the token is valid, then you know a rogue user is not calling your Function App.
+- My perferred option is to add a parameter to the Power BI Function App.  
+   - Option 1: The user id is securely passed and the user is verified having access to the report.
+   - Option 2: Add a JWT token.  A JWT is a signed token and the Function App would verify it was signed/generated by your organization.  The token could contain the report id value (or other elements) and as long as the token is verified that it was not tampered with you would run the report (provided the user has access to the requested report).  Now you do not need to worry about someone trying to guess report ids or trying to access reports they do not have access.
 
 
 # Links
