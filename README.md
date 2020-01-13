@@ -2,7 +2,7 @@
 This GitHub repository is designed to help you setup and configure Power BI Embedded in your Azure subscription.
 The process of setting up Power BI Embedded is quite confusing since it requires configuring several resource correctly 
 (e.g. Azure Service Principal, Azure Security, Power BI, creating Embedded capacity, etc.) and you must tie them together correctly.
-The below steps will walk you through the entir process. I recorded a video to show you how to perform the process.  
+The below steps will walk you through the entire process. I recorded a video to show you how to perform the process.  
 Power BI Embedded is a great tool, but most report developers have issues when setting up and configuring Power BI Embedded.
 This will walk you through each and every step.
 
