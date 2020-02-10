@@ -6,6 +6,8 @@ To run this you will do the exact same steps as you did before, but when you nee
 To get an Azure AD token with the proper audience, you need to run this application: https://github.com/microsoft/PowerBI-Developer-Samples/tree/master/User%20Owns%20Data/integrate-web-app
 
 Use https://jwt.ms to view your token.  Run Embed Report and put a break point to print out your access token: System.Diagnostics.Debug.WriteLine(accessToken.Value);
+"aud": "https://analysis.windows.net/powerbi/api"
+
 
 Once you have the proper token open the power-bi-embedded-user-owns-data.html and update the JavaScript:
 - accessToken
