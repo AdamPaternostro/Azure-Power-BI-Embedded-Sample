@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -9,44 +9,45 @@
 
 <body>
     <h2>Embedded Report (Pure JavaScript)</h2>
+    <input type="hidden" id="accessToken"
+        value="{{REPLACE-ME}}" />
+
     <p>
-        <input type="button" value="Click to Run Report"
-               onclick="javascript:RunReport('{{REPLACE-ME}}');">
+        <input type="button" value="Click to Run Report" onclick="javascript:RunReport('{{REPLACE-ME-REPORT-ID}}','{{REPLACE-ME-WORKSPACE-ID}}');">
     </p>
     <!-- All you need is this DIV in your HTML -->
-    <div id="embedContainer" style="height:500px"></div>
-
+    <div id="reportContainer" style="width: 900px; height: 500px"></div>
 </body>
 
 </html>
 
-<!-- Reference JQuery off a CDN -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 
-<!-- Put the powerbi.min.js on a webserver, CDN or Azure Storeage with a SAS token -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
 <!-- This is for demo, you should use your website for Production -->
 <script src="https://microsoft.github.io/PowerBI-JavaScript/demo/node_modules/powerbi-client/dist/powerbi.js"
     crossorigin="anonymous"></script>
-<!-- <script src="{{REPLACE-ME}}"></script> -->
-
 
 <script>
 
-    function RunReport(reportId) {
+    function RunReport(reportId, workspaceId) {
         try {
-            var azureFunction = "https://{{REPLACE-ME}}.azurewebsites.net/api/PowerBIEmbeddedToken";
-            var azureFunctionCode = "{{REPLACE-ME}}";
-            var serviceURL = azureFunction + "?code=" + azureFunctionCode;
+            // Call PowerBI REST API for getting the report Embed URL
+            // You must have token that is authorized for Power BI (e.g. it should contain this "aud": "https://analysis.windows.net/powerbi/api")
+            var accessToken = document.getElementById('accessToken').value;
+            var serviceURL = "https://api.powerbi.com/v1.0/myorg/groups/" + workspaceId + "/reports/" + reportId;
 
-            var jsonData = {
-                reportId: reportId
-            };
+            // console.log(accessToken);
+            // console.log(serviceURL);
 
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: serviceURL,
-                data: JSON.stringify(jsonData),
+                data: null,
+                beforeSend: function (request) {
+                    request.setRequestHeader("Authorization", "Bearer " + accessToken);
+                },
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: successFunc,
@@ -57,36 +58,32 @@
         }
     } // RunReport
 
+
     function successFunc(data, status) {
         try {
             if (status == "success") {
                 // place data from Azure Function into variables
-                var accessToken = data.EmbedToken;
-                var embedUrl = data.EmbedUrl;
-                var embedReportId = data.ReportId;
+                var accessToken = document.getElementById('accessToken').value;
+                var embedUrl = data.embedUrl;
+                var reportId = data.id;
 
-                // Get models. models contains enums that can be used.
-                var models = window['powerbi-client'].models;
+                // console.log(accessToken);
+                // console.log(embedUrl);
+                // console.log(reportId);
 
-                // Embed configuration used to describe the what and how to embed.
-                // This object is used when calling powerbi.embed.
-                // This also includes settings and options such as filters.
-                // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
                 var config = {
                     type: 'report',
-                    tokenType: models.TokenType.Embed,
                     accessToken: accessToken,
                     embedUrl: embedUrl,
-                    id: embedReportId,
-                    permissions: models.Permissions.All,
+                    id: reportId,
                     settings: {
                         filterPaneEnabled: true,
                         navContentPaneEnabled: true
                     }
                 };
 
-                // Get a reference to the embedded report HTML element
-                var reportContainer = $('#embedContainer')[0];
+                // Grab the reference to the div HTML element that will host the report.
+                var reportContainer = document.getElementById('reportContainer');
 
                 // Embed the report and display it within the div container.
                 var report = powerbi.embed(reportContainer, config);
