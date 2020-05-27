@@ -32,7 +32,7 @@ This process will walk through the following
 #### Notes
 - I will not use the Power BI online wizard (https://app.powerbi.com/embedsetup/appownsdata) to create the Power BI setup.  
 - Sometimes the wizard does not work due to how companies have configured their Azure Subscription. If you use the wizard, you must use it as a Global Azure Admin and that Admin must have a Power BI Pro account and they must have logged into https://app.powerbi.com/ before using the wizard.  You also must go generate a key by hand.
-- This is for an App Owns Data example.  This is typically used for deploying reports to external users.  If you want to see an User Owns Data example please click [here](./PowerBU-Embedded-JavaScript/User-Owns-Data/README.md) 
+- This is for an App Owns Data example.  This is typically used for deploying reports to external users.  If you want to see an User Owns Data example please click [here](./PowerBI-Embedded-JavaScript/User-Owns-Data/README.md) 
 
 ## What you will need
 - An Azure Subscription (you can get a free one for testing)
